@@ -14,6 +14,8 @@
     
 
 2. Create database:
+   
+   The options with which you can test the application are explained below, you have the option of using MySQL or H2 Database:
 
     * #### MySQL
 
