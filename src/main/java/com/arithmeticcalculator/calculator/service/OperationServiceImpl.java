@@ -137,7 +137,7 @@ public class OperationServiceImpl implements OperationService{
         }
 
         RecordsOperation max = lista.stream()
-                        .max(Comparator.comparing(RecordsOperation::getId))
+                        .max(Comparator.comparing(RecordsOperation::getDate))
                         .orElseThrow(NoSuchElementException::new);
                         
         OperationDTO opDT = new OperationDTO(max.getOperation().getId(),max.getOperation().getCost(), max.getOperation().getType(),null);

@@ -23,7 +23,7 @@
             CREATE DATABASE  IF NOT EXISTS `arithmetic_calculator`
             USE `arithmetic_calculator`;
 
-            CREATE TABLE `USER` (
+            CREATE TABLE `user` (
               `id` varchar(40) NOT NULL,
               `username` varchar(60) NOT NULL,
               `password` varchar(100) NOT NULL,
@@ -31,29 +31,29 @@
               PRIMARY KEY (`id`)
             );
 
-            CREATE TABLE `ROLE` (
+            CREATE TABLE `role` (
               `id` int NOT NULL AUTO_INCREMENT,
               `name` varchar(45) NOT NULL,
               PRIMARY KEY (`id`)
             );
 
-            CREATE TABLE `USER_ROLE` (
+            CREATE TABLE `user_role` (
               `role_id` int NOT NULL,
               `user_id` varchar(40) NOT NULL,
               KEY `user_role_fk_idx` (`user_id`),
               KEY `user_role_fk2_idx` (`role_id`),
-              CONSTRAINT `user_role_fk` FOREIGN KEY (`user_id`) REFERENCES `USER` (`id`),
-              CONSTRAINT `user_role_fk2` FOREIGN KEY (`role_id`) REFERENCES `ROLE` (`id`)
+              CONSTRAINT `user_role_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+              CONSTRAINT `user_role_fk2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
             );
 
-            CREATE TABLE `OPERATION` (
+            CREATE TABLE `operation` (
               `id` int NOT NULL,
               `type` varchar(20) NOT NULL,
               `cost` decimal(10,2) NOT NULL,
               PRIMARY KEY (`id`)
             );
 
-            CREATE TABLE `RECORD` (
+            CREATE TABLE `record` (
               `id` varchar(40) NOT NULL,
               `operation_id` int NOT NULL,
               `user_id` varchar(40) NOT NULL,
@@ -64,13 +64,13 @@
               PRIMARY KEY (`id`),
               KEY `record_user_fk_idx` (`user_id`),
               KEY `record_operation_fk_idx` (`operation_id`),
-              CONSTRAINT `record_operation_fk` FOREIGN KEY (`operation_id`) REFERENCES `OPERATION` (`id`),
-              CONSTRAINT `record_user_fk` FOREIGN KEY (`user_id`) REFERENCES `USER` (`id`)
+              CONSTRAINT `record_operation_fk` FOREIGN KEY (`operation_id`) REFERENCES `operation` (`id`),
+              CONSTRAINT `record_user_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
             );
 
 
-            INSERT INTO `OPERATION` VALUES (1,'Addition',0.25),(2,'Subtraction',0.25),(3,'Multiplication',0.50),(4,'Division',0.50),(5,'Square Root',0.75),(6,'Random String',1.25);
-            INSERT INTO `ROLE` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN');
+            INSERT INTO `operation` VALUES (1,'Addition',0.25),(2,'Subtraction',0.25),(3,'Multiplication',0.50),(4,'Division',0.50),(5,'Square Root',0.75),(6,'Random String',1.25);
+            INSERT INTO `role` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN');
 
         Change MySQL username and password as per your MySQL installation
 
