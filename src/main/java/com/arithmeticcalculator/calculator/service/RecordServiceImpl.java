@@ -1,5 +1,6 @@
 package com.arithmeticcalculator.calculator.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class RecordServiceImpl implements RecordService{
                 .operationResponse(r.getOperationResponse())
                 .userBalance(r.getUserBalance())
                 .build();
-            }).collect(Collectors.toList());
+            }).sorted(Comparator.comparing(RecordDTO::getUserBalance)).collect(Collectors.toList());
 
         }catch(NotFoundException nfe) {
             logger.error(nfe.getMessage());

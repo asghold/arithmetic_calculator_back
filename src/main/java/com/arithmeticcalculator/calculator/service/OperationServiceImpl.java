@@ -92,7 +92,7 @@ public class OperationServiceImpl implements OperationService{
             record.setUserBalance(initalBalance-operation.getCost());
         }else {
             RecordsOperation max = lista.stream()
-                        .max(Comparator.comparing(RecordsOperation::getDate))
+                        .min(Comparator.comparing(RecordsOperation::getUserBalance))
                         .orElseThrow(NoSuchElementException::new);
             if(max.getUserBalance()>=operation.getCost()){
             record.setUserBalance(max.getUserBalance()-operation.getCost());
@@ -137,7 +137,7 @@ public class OperationServiceImpl implements OperationService{
         }
 
         RecordsOperation max = lista.stream()
-                        .max(Comparator.comparing(RecordsOperation::getDate))
+                        .min(Comparator.comparing(RecordsOperation::getUserBalance))
                         .orElseThrow(NoSuchElementException::new);
                         
         OperationDTO opDT = new OperationDTO(max.getOperation().getId(),max.getOperation().getCost(), max.getOperation().getType(),null);
