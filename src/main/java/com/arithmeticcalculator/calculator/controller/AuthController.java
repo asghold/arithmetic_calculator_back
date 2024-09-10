@@ -1,6 +1,5 @@
 package com.arithmeticcalculator.calculator.controller;
 
-import java.net.URI;
 import java.util.Collections;
 
 import javax.validation.Valid;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.arithmeticcalculator.calculator.exception.AppException;
-import com.arithmeticcalculator.calculator.model.RoleDTO;
 import com.arithmeticcalculator.calculator.model.RoleName;
 import com.arithmeticcalculator.calculator.model.UserDTO;
 import com.arithmeticcalculator.calculator.payload.ApiResponse;
@@ -28,7 +26,6 @@ import com.arithmeticcalculator.calculator.payload.JwtAuthenticationResponse;
 import com.arithmeticcalculator.calculator.payload.LoginRequest;
 import com.arithmeticcalculator.calculator.payload.SingUpRequest;
 import com.arithmeticcalculator.calculator.security.JwtTokenProvider;
-import com.arithmeticcalculator.calculator.security.UserDetailsImpl;
 import com.arithmeticcalculator.calculator.service.RoleService;
 import com.arithmeticcalculator.calculator.service.UserService;
 
@@ -60,11 +57,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        String jwt = jwtTokenProvider.generateToken(authentication);
-
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwtTokenProvider.generateToken(authentication)));
     }
     
     @PostMapping("/signup")
@@ -73,20 +66,10 @@ public class AuthController {
         if(userService.existsByUsername(singUpRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!!"), HttpStatus.BAD_REQUEST);
         }
-
-
-        String pass = passwordEncoder.encode(singUpRequest.getPassword());
-        UserDTO userDTO = new UserDTO("",pass,true,singUpRequest.getUsername(), null, null);
         
-        RoleDTO userRole = roleService.findByName(RoleName.ROLE_USER).orElseThrow(()-> new AppException("User Role not set."));
+        UserDTO userSaved = userService.saveUser(new UserDTO("",passwordEncoder.encode(singUpRequest.getPassword()),true,singUpRequest.getUsername(), null, Collections.singleton(roleService.findByName(RoleName.ROLE_USER).orElseThrow(()-> new AppException("User Role not set.")))));
 
-        userDTO.setRoles(Collections.singleton(userRole));
-
-        UserDTO userSaved = userService.saveUser(userDTO);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{username}").buildAndExpand(userSaved.getUsername()).toUri();
-
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{username}").buildAndExpand(userSaved.getUsername()).toUri()).body(new ApiResponse(true, "User registered successfully"));
         
         
     }

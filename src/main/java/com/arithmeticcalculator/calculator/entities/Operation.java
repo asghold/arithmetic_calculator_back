@@ -23,6 +23,8 @@ public class Operation implements Serializable {
 
 	private String type;
 
+	private Boolean valid;
+
 	//bi-directional many-to-one association to Record
 	@OneToMany(mappedBy="operation")
 	private List<RecordsOperation> records;
@@ -75,5 +77,19 @@ public class Operation implements Serializable {
 
 		return record;
 	}
+
+
+	public Boolean isValid() {
+		return this.valid;
+	}
+
+	public Boolean getValid() {
+		return this.valid;
+	}
+
+	public void setValid(Boolean valid) {
+		this.valid = valid;
+	}
+
 
 }

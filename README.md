@@ -50,6 +50,7 @@
               `id` int NOT NULL,
               `type` varchar(20) NOT NULL,
               `cost` decimal(10,2) NOT NULL,
+              `valid` bit(1) NOT NULL,
               PRIMARY KEY (`id`)
             );
 
@@ -69,7 +70,7 @@
             );
 
 
-            INSERT INTO `operation` VALUES (1,'Addition',0.25),(2,'Subtraction',0.25),(3,'Multiplication',0.50),(4,'Division',0.50),(5,'Square Root',0.75),(6,'Random String',1.25);
+            INSERT INTO `operation` VALUES (1,'Addition',0.25,1),(2,'Subtraction',0.25,1),(3,'Multiplication',0.50,1),(4,'Division',0.50,1),(5,'Square Root',0.75,1),(6,'Random String',1.25,1);
             INSERT INTO `role` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN');
 
         Change MySQL username and password as per your MySQL installation

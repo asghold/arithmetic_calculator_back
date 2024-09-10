@@ -43,9 +43,7 @@ public class ArithmeticCalculatorController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> generateOperation(@CurrentUser UserDetailsImpl currentUser, @PathVariable Long id, @RequestBody DataGenericDTO data) {
         try {
-            UserDTO userDTO = new UserDTO(currentUser.getId(),currentUser.getPassword(),true,currentUser.getUsername(), null, null);
-            RecordDTO recordDTO = operationService.operation(userDTO, id, data);
-            return new ResponseEntity<RecordDTO>(recordDTO, HttpStatus.OK);
+            return new ResponseEntity<RecordDTO>(operationService.operation(new UserDTO(currentUser.getId(),currentUser.getPassword(),true,currentUser.getUsername(), null, null), id, data), HttpStatus.OK);
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } 
@@ -56,9 +54,7 @@ public class ArithmeticCalculatorController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getBalance(@CurrentUser UserDetailsImpl currentUser) {
         try{
-            UserDTO userDTO = new UserDTO(currentUser.getId(),currentUser.getPassword(),true,currentUser.getUsername(), null, null);
-            RecordDTO recordDTO = operationService.getLastRecord(userDTO);
-            return new ResponseEntity<RecordDTO>(recordDTO, HttpStatus.OK);
+            return new ResponseEntity<RecordDTO>(operationService.getLastRecord(new UserDTO(currentUser.getId(),currentUser.getPassword(),true,currentUser.getUsername(), null, null)), HttpStatus.OK);
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
